@@ -1,0 +1,4 @@
+59c59
+<     least_busy_device = least_busy(provider.backends(simulator=False))
+---
+>     least_busy_device = least_busy(provider.backends(simulator=False, n_qubits=5))

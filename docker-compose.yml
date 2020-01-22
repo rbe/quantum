@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+    ibmq:
+        build:
+            context: ibmq
+        volumes:
+            - qiskit-terra:/qiskit-terra
+    dwave:
+        build:
+            context: dwave
+        volumes:
+            - dwave-demos:/demos
+
+volumes:
+    qiskit-terra:
+        driver: local
+    dwave-demos:
+        driver: local
