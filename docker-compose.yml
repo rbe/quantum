@@ -1,19 +1,16 @@
-version: '3.7'
+version: '3'
 
 services:
     ibmq:
         build:
             context: ibmq
+        restart: unless-stopped
         volumes:
-            - qiskit-terra:/qiskit-terra
+            - ./ibmq/heisenberg:/ibmq/heisenberg
+            - ./ibmq/qiskit-terra:/ibmq/qiskit-terra
     dwave:
         build:
             context: dwave
+        restart: unless-stopped
         volumes:
-            - dwave-demos:/demos
-
-volumes:
-    qiskit-terra:
-        driver: local
-    dwave-demos:
-        driver: local
+            - ./dwave/dwave-demos:/demos

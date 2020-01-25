@@ -12,19 +12,22 @@ RUN pip install --upgrade pip \
     && pip install --upgrade setuptools
 
 FROM python AS dwave-demos
-RUN git clone --recursive https://github.com/dwavesystems/demos.git
+# Use volume from docker-compose
+#RUN git clone --recursive https://github.com/dwavesystems/demos.git
 
 FROM dwave-demos
-RUN cd demos \
-    && git submodule foreach git pull origin master
-RUN cd demos/factoring \
-    && pip install -r requirements.txt
-RUN echo <<EOF
-[defaults]
-client = qpu
-
-[prod]
-token = ${DWAVE_TOKEN}
-EOF
-WORKDIR /demos/factoring
+#RUN cd /dwave-demos \
+#    && git submodule foreach git pull origin master
+#RUN cd /dwave-demos/factoring \
+#    && pip install -r requirements.txt
+ARG DWAVE_TOKEN=
+RUN mkdir -p /root/.config/dwave \
+    && echo <<EOF\
+[defaults]\
+client = qpu\
+\
+[prod]\
+token = ${DWAVE_TOKEN}\
+EOF >/root/.config/dwave/dwave.conf
+WORKDIR /dwave-demos
 CMD ["tail", "-f", "/dev/null"]

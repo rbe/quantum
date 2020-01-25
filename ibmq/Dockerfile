@@ -15,11 +15,12 @@ RUN pip install qiskit
 #RUN pip install qiskit-ibmq-provider
 
 FROM qiskit
-RUN git clone https://github.com/Qiskit/qiskit-terra
+# Use volume from docker-compose
+#RUN git clone https://github.com/Qiskit/qiskit-terra.git
 ARG IBMQ_TOKEN=
 RUN python -c "import qiskit; qiskit.IBMQ.save_account(token='${IBMQ_TOKEN}')"
-WORKDIR /qiskit-terra/examples/python/ibmq
-COPY hq_n_qubits.patch .
-RUN patch hello_quantum.py hq_n_qubits.patch
-WORKDIR /qiskit-terra
+COPY hq_n_qubits.patch /ibmq/qiskit-terra/examples/python/ibmq
+# Do not patch by default
+#RUN patch hello_quantum.py hq_n_qubits.patch
+WORKDIR /ibmq
 CMD ["tail", "-f", "/dev/null"]
