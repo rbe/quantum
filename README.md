@@ -1,14 +1,15 @@
 # Quantum Computing
 
+Playing around with quantum computers IBM Q and D-Wave.
+Get your account at [IBM Quantum Experience](https://quantum-computing.ibm.com) and [D-Wave Leap](https://cloud.dwavesys.com/leap/).
+
 ## Container
 
-Get an account at [IBM Quantum Experience](https://quantum-computing.ibm.com) and [D-Wave Leap](https://cloud.dwavesys.com/leap/).
-To build all Docker images provide your API tokens:
+To build all Docker images provide your API tokens when asked by `run.sh`:
 
-    docker-compose build --build-arg IBMQ_TOKEN=... \
-         --build-arg DWAVE_TOKEN=...
+    ./run.sh
 
-To build a single image, IBM Q use:
+To build IBM Q image, use:
 
     docker-compose build --build-arg IBMQ_TOKEN=... ibmq
 
@@ -20,41 +21,47 @@ or D-Wave enter:
 
 Run a shell in IBM Q Docker container:
 
-    docker run -it quantum_ibmq bash
+    docker-compose exec ibmq bash
 
 ### Hello Quantum!
 
-Please patch `hello_quantum.py` to use a Quantum chip with 5 (more than 1) qubits:
+Please patch `hello_quantum.py` (if still neccessary) to use a Quantum chip with 5 (more than 1) qubits:
 
-    cd examples/python/ibmq
+    cd /qiskit-terra/examples/python/ibmq
     patch hello_quantum.py hq_n_qubits.patch
-
-(which is already done by Dockerfile)
 
 and execute the example:
 
-    cd examples/python/ibmq
+    cd /qiskit-terra/examples/python/ibmq
     python hello_quantum.py
 
 which should show:
 
-    BasicAer backends:  [<QasmSimulatorPy('qasm_simulator') from BasicAer()>, <StatevectorSimulatorPy('statevector_simulator') from BasicAer()>, <UnitarySimulatorPy('unitary_simulator') from BasicAer()>]
+    BasicAer backends:  [<QasmSimulatorPy('qasm_simulator') from BasicAer()>, ...]
     {'00': 500, '11': 524}
-    Remote backends:  [<IBMQSimulator('ibmq_qasm_simulator') from IBMQ(hub='ibm-q', group='open', project='main')>, <IBMQBackend('ibmqx2') from IBMQ(hub='ibm-q', group='open', project='main')>, <IBMQBackend('ibmq_16_melbourne') from IBMQ(hub='ibm-q', group='open', project='main')>, <IBMQBackend('ibmq_vigo') from IBMQ(hub='ibm-q', group='open', project='main')>, <IBMQBackend('ibmq_ourense') from IBMQ(hub='ibm-q', group='open', project='main')>, <IBMQBackend('ibmq_london') from IBMQ(hub='ibm-q', group='open', project='main')>, <IBMQBackend('ibmq_burlington') from IBMQ(hub='ibm-q', group='open', project='main')>, <IBMQBackend('ibmq_essex') from IBMQ(hub='ibm-q', group='open', project='main')>, <IBMQBackend('ibmq_armonk') from IBMQ(hub='ibm-q', group='open', project='main')>]
+    Remote backends:  [<IBMQBackend('ibmqx2') from IBMQ(hub='ibm-q', group='open', project='main')>, ...]
     Running on current least busy device:  ibmqx2
     Counts:  {'01': 28, '00': 481, '11': 499, '10': 16}
+
+### Star Trek(TM)
+
+Quantum Teleportation using IBM Q:
+
+    cd /heisenberg
+    python StarTrek.py
 
 ## D-Wave
 
 Run a shell in D-Wave Docker container:
 
-    docker run -it quantum_dwave bash
+    docker-compose exec dwave bash
 
 ### Factoring Demo
 
-Run the fraction demo:
+Run the factoring demo:
 
-    cd /demos/factoring
+    cd /dwave-demos/factoring
+    pip install -r requirements.txt
     python demo.py
 
 This should produce a result like the following:
@@ -80,7 +87,7 @@ This should produce a result like the following:
 
 To setup another demo:
 
-    cd /demos/<another demo>
+    cd /dwave-demos/<another demo>
     pip install -r requirements.txt
 
 As every demo may need other versions of software components they will be installed or replaced.
